@@ -235,6 +235,14 @@ public class AnimationsManager implements ViewHierarchyObserver {
     // go through ready to remove from bottom to top
     for (int tag : mToRemove) {
       View view = mViewForTag.get(tag);
+      if (view == null) {
+        try {
+          view = mUIManager.resolveView(tag);
+          mViewForTag.put(tag, view);
+        } catch (IllegalViewOperationException ignored) {
+          continue;
+        }
+      }
       findRoot(view, roots);
     }
     for (int tag : roots) {
